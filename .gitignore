@@ -1,0 +1,16 @@
+coverage
+rdoc
+doc
+.yardoc
+.bundle
+pkg
+.DS_Store
+*.tmproj
+tmtags
+*~
+\#*
+.\#*
+*.swp
+*.rbc
+.rvmrc
+.project
