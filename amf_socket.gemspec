@@ -16,4 +16,5 @@ Gem::Specification.new do |gem|
   gem.version       = AmfSocket::VERSION
 
   gem.add_development_dependency('eventmachine', ['>= 1.0.0.rc.4'])
+  gem.add_development_dependency('rocket', ['>= 1.0.0.rc.4'])
 end

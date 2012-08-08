@@ -1,5 +1,6 @@
-require "amf_socket/version"
+require 'eventmachine'
 
-module AmfSocket
-  # Your code goes here...
-end
+module AmfSocket; end
+
+require 'amf_socket/version'
+require 'amf_socket/protocol'
