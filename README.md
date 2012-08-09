@@ -1,4 +1,4 @@
-# AmfSocket
+# AMF Socket - Ruby
 
 AMF Socket is a bi-directional RPC system for Adobe Flash (Actionscript) programs.
 This library is an implementation of [AMF Socket](https://github.com/chadrem/amf_socket) for Ruby's EventMachine.
