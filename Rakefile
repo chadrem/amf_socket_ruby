@@ -3,6 +3,11 @@
 require 'rubygems'
 
 begin
+  require 'debugger'
+rescue Exception
+end
+
+begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
   $stderr.puts(e.message)
@@ -27,6 +32,6 @@ end
 desc 'Start a test server'
 task :harness => :environment do
   EM.run do
-    EM.start_server('localhost', 9000, AmfSocket::Protocol)
+    EM.start_server('localhost', 9000, AmfSocket::AmfRpcConnection)
   end
 end

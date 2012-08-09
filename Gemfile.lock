@@ -2,6 +2,8 @@ PATH
   remote: .
   specs:
     amf_socket (0.0.1)
+      RocketAMF (>= 0.2.1)
+      eventmachine (>= 1.0.0.rc.4)
 
 GEM
   remote: https://rubygems.org/
@@ -13,6 +15,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  RocketAMF (>= 0.2.1)
   amf_socket!
-  eventmachine (>= 1.0.0.rc.4)
