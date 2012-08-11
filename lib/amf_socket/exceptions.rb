@@ -1,4 +1,4 @@
 module AmfSocket
-  class InvalidRequest < RuntimeError; end
+  class InvalidObject < RuntimeError; end
   class AlreadyReplied < RuntimeError; end
 end
