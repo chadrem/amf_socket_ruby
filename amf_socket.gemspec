@@ -4,7 +4,7 @@ require File.expand_path('../lib/amf_socket/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Chad Remesch"]
   gem.email         = ["chad@remesch.com"]
-  gem.description   = %q{Ruby implementation of AMF Socket}
+  gem.description   = %q{Ruby implementation of AMF Socket (https://github.com/chadrem/amf_socket)}
   gem.summary       = %q{AMF Socket is a bi-directional RPC system for Adobe Flash (Actionscript) programs.}
   gem.homepage      = ""
 
