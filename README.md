@@ -1,6 +1,7 @@
 # AMF Socket - Ruby
 
 This library is an implementation of [AMF Socket](https://github.com/chadrem/amf_socket) for Ruby's EventMachine.
+Currently it is in the early stages and the API is incomplete.
 
 ## Installation
 
