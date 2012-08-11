@@ -28,8 +28,6 @@ class AmfSocket::RpcRequest
     object = {}
     object[:type] = 'rpcResponse'
     object[:response] = {}
-    object[:response][:command] = command
-    object[:response][:params] = params
     object[:response][:messageId] = message_id
     object[:response][:result] = result
 
