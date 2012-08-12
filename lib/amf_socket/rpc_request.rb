@@ -1,12 +1,12 @@
 class AmfSocket::RpcRequest
-  attr_reader :amf_connection
+  attr_reader :connection
   attr_reader :state # Valid states: :initialized, replied.
 
-  def initialize(object, amf_connection)
+  def initialize(object, connection)
     raise RpcSocket::InvalidObject unless validate_object(object)
 
     @request_obj = object[:request]
-    @amf_connection = amf_connection
+    @connection = connection
     @state = :initialized
   end
 
@@ -31,7 +31,7 @@ class AmfSocket::RpcRequest
     object[:response][:messageId] = message_id
     object[:response][:result] = result
 
-    @amf_connection.send_object(object)
+    @connection.send_object(object)
 
     return true
   end
@@ -40,7 +40,7 @@ class AmfSocket::RpcRequest
 
   def validate_object(object)
     return false unless object.is_a?(Hash)
-    return false unless %(rpcRequest rpcResponse).include?(object[:type])
+    return false unless object[:type] == 'rpcRequest'
     return false unless object[:request].is_a?(Hash)
     return false unless object[:request][:command].is_a?(String)
     return false unless object[:request][:params].is_a?(Hash)
