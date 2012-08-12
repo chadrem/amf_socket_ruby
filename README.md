@@ -19,9 +19,6 @@ Or install it yourself as:
 
 ## Usage
 
-Currently this library is immature and the API is evolving.
-Simple example:
-
     EM.run do
       class MyConnection < AmfSocket::AmfRpcConnection
         private
