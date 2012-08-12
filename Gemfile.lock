@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    amf_socket (0.0.2)
+    amf_socket (0.1.0)
       RocketAMF (>= 0.2.1)
       eventmachine (>= 1.0.0.rc.4)
 
