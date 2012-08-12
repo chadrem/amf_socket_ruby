@@ -34,7 +34,6 @@ desc 'Start a test server'
 task :harness => :environment do
   EM.run do
     class MyConnection < AmfSocket::AmfRpcConnection
-      private
       def post_init
         super
 

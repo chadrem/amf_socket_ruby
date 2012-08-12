@@ -20,7 +20,6 @@ Or install it yourself as:
 
     EM.run do
       class MyConnection < AmfSocket::AmfRpcConnection
-        private
         def post_init
           super
 

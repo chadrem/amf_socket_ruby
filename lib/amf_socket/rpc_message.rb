@@ -1,11 +1,11 @@
 class AmfSocket::RpcMessage
-  attr_reader :amf_connection
+  attr_reader :connection
 
-  def initialize(object, amf_connection)
+  def initialize(object, connection)
     raise RpcSocket::InvalidObject unless validate_object(object)
 
     @message_obj = object[:message]
-    @amf_connection = amf_connection
+    @connection = connection
   end
 
   def message_id
