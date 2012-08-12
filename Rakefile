@@ -33,6 +33,30 @@ end
 desc 'Start a test server'
 task :harness => :environment do
   EM.run do
-    EM.start_server('localhost', 9000, AmfSocket::AmfRpcConnection)
+    class MyConnection < AmfSocket::AmfRpcConnection
+      private
+      def post_init
+        super
+
+        puts 'Sending a request'
+        send_request('hello', :foo => 'bar') do |response|
+          puts "received a response to my request: #{response.result}"
+        end
+
+        puts 'Sending a message'
+        send_message('hey there', ['hello', 'world'])
+      end
+
+      def receive_request(request)
+        puts "received a request: #{request.command}"
+        request.reply('Here is my response')
+      end
+
+      def receive_message(message)
+        puts "received a message: #{message.command}"
+      end
+    end
+
+    EM.start_server('localhost', 9000, MyConnection)
   end
 end
