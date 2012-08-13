@@ -21,7 +21,7 @@ task :environment do
   require 'amf_socket'
 end
 
-desc 'Start an IRB console with offier loaded'
+desc 'Start an IRB console'
 task :console => :environment do
   require 'irb'
 
