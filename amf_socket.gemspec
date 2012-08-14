@@ -15,6 +15,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = AmfSocket::VERSION
 
-  gem.add_dependency('eventmachine', ['>= 1.0.0.rc.4'])
+  gem.add_dependency('eventmachine', ['>= 0.12.10'])
   gem.add_dependency('RocketAMF', ['>= 0.2.1'])
 end

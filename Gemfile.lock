@@ -3,7 +3,7 @@ PATH
   specs:
     amf_socket (0.1.1)
       RocketAMF (>= 0.2.1)
-      eventmachine (>= 1.0.0.rc.4)
+      eventmachine (>= 0.12.10)
 
 GEM
   remote: https://rubygems.org/
