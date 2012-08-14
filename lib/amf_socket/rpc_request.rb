@@ -3,7 +3,7 @@ class AmfSocket::RpcRequest
   attr_reader :state # Valid states: :initialized, replied.
 
   def initialize(object, connection)
-    raise RpcSocket::InvalidObject unless validate_object(object)
+    raise AmfSocket::InvalidObject unless validate_object(object)
 
     @request_obj = object[:request]
     @connection = connection

@@ -6,7 +6,7 @@ class AmfSocket::RpcResponse
   attr_reader :result
 
   def initialize(request_object, response_object, connection)
-    raise RpcSocket::InvalidObject unless validate_object(response_object)
+    raise AmfSocket::InvalidObject unless validate_object(response_object)
 
     req = request_object[:request]
     res = response_object[:response]
