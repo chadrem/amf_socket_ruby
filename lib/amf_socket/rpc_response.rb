@@ -25,7 +25,7 @@ class AmfSocket::RpcResponse
     return false unless object[:type] == 'rpcResponse'
     return false unless object[:response].is_a?(Hash)
     return false unless object[:response][:messageId].is_a?(String)
-    return false unless object[:response][:result].is_a?(String)
+    return false unless object[:response].has_key?(:result)
 
     return true
   end
