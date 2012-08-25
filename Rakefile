@@ -30,6 +30,14 @@ task :console => :environment do
   IRB.start
 end
 
+desc 'Run all specs'
+task :spec do
+  puts 'Running rspec:'
+  system 'rspec spec'
+end
+
+task :default => :spec
+
 desc 'Start a test server'
 task :harness => :environment do
   EM.run do
