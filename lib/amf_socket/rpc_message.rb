@@ -1,35 +1,26 @@
 class AmfSocket::RpcMessage
-  attr_reader :connection
+  attr_reader :message_id
+  attr_reader :command
+  attr_reader :params
 
-  def initialize(object, connection)
-    raise AmfSocket::InvalidObject unless validate_object(object)
+  def initialize(command, params = {})
+    raise AmfSocket::InvalidArg.new('Command must be a String.') unless command.is_a?(String)
+    raise AmfSocket::InvalidArg.new('Params must be a Hash.') unless params.is_a?(Hash)
 
-    @message_obj = object[:message]
-    @connection = connection
+    @command = command
+    @params = params
+    @message_id = SecureRandom.hex
   end
 
-  def message_id
-    return @message_obj[:messageId]
-  end
+  def to_hash
+    object = {}
 
-  def command
-    return @message_obj[:command]
-  end
+    object[:type] = 'rpcMessage'
+    object[:message] = {}
+    object[:message][:messageId] = message_id
+    object[:message][:command] = command
+    object[:message][:params] = params
 
-  def params
-    return @message_obj[:params]
-  end
-
-  private
-
-  def validate_object(object)
-    return false unless object.is_a?(Hash)
-    return false unless object[:type] == 'rpcMessage'
-    return false unless object[:message].is_a?(Hash)
-    return false unless object[:message][:command].is_a?(String)
-    return false unless object[:message][:params].is_a?(Hash)
-    return false unless object[:message][:messageId].is_a?(String)
-
-    return true
+    return object
   end
 end

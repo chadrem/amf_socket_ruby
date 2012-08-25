@@ -37,22 +37,36 @@ task :harness => :environment do
       def post_init
         super
 
-        puts 'Sending a request'
-        send_request('hello', :foo => 'bar') do |response|
-          puts "received a response to my request: #{response.result}"
+        puts 'Connected.'
+
+        puts 'Sending a request.'
+        send_request('hello', :foo => 'bar') do |request|
+          request.succeeded do |response|
+            puts "Request received a response. result=#{response.result}"
+          end
+
+          request.failed do |reason|
+            puts "Request failed to receive a response. reason=#{reason}"
+          end
         end
 
-        puts 'Sending a message'
-        send_message('hey there', ['hello', 'world'])
+        puts 'Sending a message.'
+        send_message('hey there', :bar => ['hello', 'world'])
       end
 
       def receive_request(request)
-        puts "received a request: #{request.command}"
+        puts "Received a request. command=#{request.command}, params=#{request.params}"
         request.reply('Here is my response')
       end
 
       def receive_message(message)
-        puts "received a message: #{message.command}"
+        puts "Received a message. command=#{message.command}, params=#{message.params}"
+      end
+
+      def unbind
+        super
+
+        puts 'Disconnected.'
       end
     end
 

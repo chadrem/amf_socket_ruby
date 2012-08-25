@@ -1,31 +1,15 @@
 class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
   def send_request(command, params = {}, &block)
-    message_id = SecureRandom.hex
-
-    object = {}
-    object[:type] = 'rpcRequest'
-    object[:request] = {}
-    object[:request][:messageId] = message_id
-    object[:request][:command] = command
-    object[:request][:params] = params
-
-    @sent_requests[message_id] = [object, block]
-
-    send_object(object)
+    request = AmfSocket::RpcRequest.new(command, params)
+    block.call(request)
+    @sent_requests[request.message_id] = request
+    send_object(request.to_hash)
   end
 
   def send_message(command, params = {})
-    object = {}
-    object[:type] = 'rpcMessage'
-    object[:message] = {}
-    object[:message][:messageId] = SecureRandom.hex
-    object[:message][:command] = command
-    object[:message][:params] = params
-
-    send_object(object)
+    message = AmfSocket::RpcMessage.new(command, params)
+    send_object(message.to_hash)
   end
-
-  private
 
   #
   # EM Callbacks.
@@ -42,19 +26,29 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
 
       case object[:type]
       when 'rpcRequest'
-        request = AmfSocket::RpcRequest.new(object, self)
+        request = AmfSocket::RpcReceivedRequest.new(object, self)
         receive_request(request)
       when 'rpcResponse'
         receive_response(object)
       when 'rpcMessage'
-        message = AmfSocket::RpcMessage.new(object, self)
+        message = AmfSocket::RpcReceivedMessage.new(object, self)
         receive_message(message)
       else
         raise AmfSocket::InvalidObject
       end
-    rescue AmfSocket::InvalidObject => e
+    rescue AmfSocket::InvalidObject
       close_connection
     end
+  end
+
+  def unbind
+    @sent_requests.each do |message_id, request|
+      if request.failed_callback.is_a?(Proc)
+        request.failed_callback.call('disconnected')
+      end
+    end
+
+    @sent_requests.clear
   end
 
   #
@@ -72,14 +66,13 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
 
   def receive_response(response_object)
     raise AmfSocket::InvalidObject unless (message_id = response_object[:response][:messageId])
-    raise AmfSocket::InvalidObject unless (sent_request = @sent_requests[message_id])
+    raise AmfSocket::InvalidObject unless (request = @sent_requests[message_id])
 
-    request_object = sent_request[0]
-    block = sent_request[1]
-    response = AmfSocket::RpcResponse.new(request_object, response_object, self)
-
+    response = AmfSocket::RpcResponse.new(request, response_object)
     @sent_requests.delete(message_id)
 
-    block.call(response)
+    if request.succeeded_callback.is_a?(Proc)
+      request.succeeded_callback.call(response)
+    end
   end
 end

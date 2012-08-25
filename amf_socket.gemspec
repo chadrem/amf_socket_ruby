@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["chad@remesch.com"]
   gem.description   = %q{Ruby implementation of AMF Socket (https://github.com/chadrem/amf_socket)}
   gem.summary       = %q{AMF Socket is a bi-directional RPC system for Adobe Flash (Actionscript) programs.}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/chadrem/observation"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
