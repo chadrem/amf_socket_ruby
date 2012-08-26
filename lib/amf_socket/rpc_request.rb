@@ -6,7 +6,6 @@ class AmfSocket::RpcRequest
 
   attr_accessor :succeeded_callback
   attr_accessor :failed_callback
-  attr_accessor :timeout
 
   def initialize(command, params = {})
     raise AmfSocket::InvalidArg.new('Command must be a String.') unless command.is_a?(String)
