@@ -15,11 +15,11 @@ describe AmfSocket::RpcMessage do
     message = AmfSocket::RpcMessage.new('hello', :foo => 'bar')
 
     expected = {
-      :type=> 'rpcMessage',
+      :type => 'rpcMessage',
       :message => {
         :messageId => message.message_id,
         :command => 'hello',
-        :params=> { :foo => 'bar'
+        :params => { :foo => 'bar'
         }
       }
     }
