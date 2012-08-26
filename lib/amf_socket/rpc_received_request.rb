@@ -33,6 +33,8 @@ class AmfSocket::RpcReceivedRequest
 
     @connection.send_object(object)
 
+    @state = :replied
+
     return true
   end
 
