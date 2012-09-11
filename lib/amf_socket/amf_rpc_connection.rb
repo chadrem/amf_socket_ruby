@@ -1,14 +1,20 @@
 class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
+  PING_INTERVAL = 5 # Seconds.
+
+  attr_reader :latency
+
   def send_request(command, params = {}, &block)
     request = AmfSocket::RpcRequest.new(command, params)
     block.call(request)
     @sent_requests[request.message_id] = request
     send_object(request.to_hash)
+    request.send(:sent)
   end
 
   def send_message(command, params = {})
     message = AmfSocket::RpcMessage.new(command, params)
     send_object(message.to_hash)
+    message.send(:sent)
   end
 
   #
@@ -17,7 +23,11 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
 
   def post_init
     super
+
     @sent_requests = {}
+    @next_ping = Time.now.utc
+
+    AmfSocket.heartbeat.add(self)
   end
 
   def receive_object(object)
@@ -42,6 +52,8 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
   end
 
   def unbind
+    AmfSocket.heartbeat.remove(self)
+
     @sent_requests.each do |message_id, request|
       if request.failed_callback.is_a?(Proc)
         request.failed_callback.call('disconnected')
@@ -66,13 +78,59 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
 
   def receive_response(response_object)
     raise AmfSocket::InvalidObject unless (message_id = response_object[:response][:messageId])
-    raise AmfSocket::InvalidObject unless (request = @sent_requests[message_id])
+
+    return unless (request = @sent_requests[message_id]) # Ignore timed out requests.
 
     response = AmfSocket::RpcResponse.new(request, response_object)
     @sent_requests.delete(message_id)
 
-    if request.succeeded_callback.is_a?(Proc)
-      request.succeeded_callback.call(response)
+    AmfSocket.try do
+      if request.succeeded_callback.is_a?(Proc)
+        request.succeeded_callback.call(response)
+      end
+    end
+  end
+
+  def heartbeat
+    timeout_requests
+    ping
+  end
+
+  #
+  # Private Methods.
+  #
+
+  private
+
+  def timeout_requests
+    @sent_requests.each do |message_id, request|
+      if request.timed_out?
+        AmfSocket.try do
+          if request.failed_callback.is_a?(Proc)
+            request.failed_callback.call('timed_out')
+          end
+        end
+
+        @sent_requests.delete(message_id)
+      end
+    end
+  end
+
+  def ping
+    return if @next_ping > Time.now.utc
+
+    send_request('amf_socket_ping', :time => Time.now.utc, :latency => @latency.to_f) do |request|
+      @next_ping = Time.now.utc + PING_INTERVAL
+
+      request.timeout = 10
+
+      request.succeeded do |response|
+        @latency = Time.now.utc - request.sent_at
+      end
+
+      request.failed do |reason|
+        close_connection if reason == 'timed_out'
+      end
     end
   end
 end
