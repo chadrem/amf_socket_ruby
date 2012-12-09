@@ -59,6 +59,16 @@ Or install it yourself as:
       EM.start_server('localhost', 9000, MyConnection)
     end
 
+## Policy Server
+
+Newer versions of the Flash runtime require a valid policy file before socket connections are permitted.
+This gem includes a simple policy connection class for delivering this file.
+Note that you will need run the below code as root on Linux/UNIX since it uses a port number less 1024.
+
+    EM.run do
+      EM.start_server('0.0.0.0', 843, AmfSocket::PolicyConnection)
+    end
+
 ## Contributing
 
 1. Fork it
