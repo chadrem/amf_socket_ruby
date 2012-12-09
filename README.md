@@ -18,6 +18,8 @@ Or install it yourself as:
 
 ## Usage
 
+    require 'amf_socket'
+
     EM.run do
       class MyConnection < AmfSocket::AmfRpcConnection
         def post_init
@@ -64,6 +66,9 @@ Or install it yourself as:
 Newer versions of the Flash runtime require a valid policy file before socket connections are permitted.
 This gem includes a simple policy connection class for delivering this file.
 Note that you will need run the below code as root on Linux/UNIX since it uses a port number less 1024.
+It is recommended you run the policy server in a separate process from your application code in order to minimize security risks.  
+
+    require 'amf_socket'
 
     EM.run do
       EM.start_server('0.0.0.0', 843, AmfSocket::PolicyConnection)
