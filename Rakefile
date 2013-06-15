@@ -11,8 +11,6 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
-require 'debugger'
-
 task :environment do
   $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib'))
   require 'amf_socket'
