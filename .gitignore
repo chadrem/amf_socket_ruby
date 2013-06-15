@@ -15,3 +15,5 @@ tmtags
 .rvmrc
 .project
 tmp/
+.ruby-version
+.ruby-gemset
