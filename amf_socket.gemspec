@@ -23,5 +23,4 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('guard', ['= 1.3.2'])
   gem.add_development_dependency('guard-rspec', ['= 1.2.1'])
   gem.add_development_dependency('growl', ['= 1.0.3'])
-  gem.add_development_dependency('debugger', ['= 1.2.0'])
 end
