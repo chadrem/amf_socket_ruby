@@ -37,7 +37,12 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
       case object[:type]
       when 'rpcRequest'
         request = AmfSocket::RpcReceivedRequest.new(object, self)
-        receive_request(request)
+        case request.command
+        when 'amf_socket_ping'
+          receive_ping_request(request)
+        else
+          receive_request(request)
+        end
       when 'rpcResponse'
         receive_response(object)
       when 'rpcMessage'
@@ -70,6 +75,11 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
   # Override this method in your subclass.
   def receive_request(request)
     request.reply("You should override #{self.class.to_s}#receive_request.")
+  end
+
+  # Respond to server ping requests (when used with EM.connect for client side sockets).
+  def receive_ping_request(request)
+    request.reply(nil)
   end
 
   # Override this method in your subclass.

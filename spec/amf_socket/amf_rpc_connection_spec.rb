@@ -28,6 +28,11 @@ class AmfRpcConnTestable < AmfSocket::AmfRpcConnection
     @received_requests << request
   end
 
+  def receive_ping_request(request)
+    $receive_ping_callback.call(request)
+    super
+  end
+
   def receive_message(message)
     @received_messages << message
   end
@@ -111,6 +116,28 @@ describe AmfSocket::AmfRpcConnection do
       request.command.should == 'hello'
       request.params.should == { :foo => 'bar' }
       request.connection.should == @conn
+    end
+
+    it 'should handle received ping requests and reply' do
+      object = {
+        :type => 'rpcRequest',
+        :request => {
+          :messageId => '123',
+          :command => 'amf_socket_ping',
+          :params => {
+            :time => Time.now,
+            :latency => 0.5
+          }
+        }
+      }
+
+      $receive_ping_callback = proc { |request|
+        request.should_receive(:reply)
+      }
+
+      @conn.receive_object(object)
+
+      request = @conn.received_requests.first
     end
 
     it 'should handle recevied messages' do
