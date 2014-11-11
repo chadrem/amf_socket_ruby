@@ -7,8 +7,10 @@ class AmfSocket::PolicyConnection < EM::Connection
       </cross-domain-policy>
     eos
 
-    send_data(policy)
-    close_connection_after_writing
+    send_data(policy + "\0")
+    EM::Timer.new(5) do
+      close_connection_after_writing
+    end
   end
 
   def receive_data(data)
