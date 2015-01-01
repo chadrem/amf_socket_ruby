@@ -37,11 +37,11 @@ class AmfSocket::RpcRequest
   def to_hash
     object = {}
 
-    object[:type] = 'rpcRequest'
-    object[:request] = {}
-    object[:request][:messageId] = message_id
-    object[:request][:command] = command
-    object[:request][:params] = params
+    object['type'] = 'rpcRequest'
+    object['request'] = {}
+    object['request']['messageId'] = message_id
+    object['request']['command'] = command
+    object['request']['params'] = params
 
     return object
   end

@@ -5,10 +5,10 @@ describe AmfSocket::RpcResponse do
     request = stub
 
     response_object = {
-      :type => 'rpcResponse',
-      :response => {
-        :messageId => 'random id',
-        :result => 'foobar'
+      'type' => 'rpcResponse',
+      'response' => {
+        'messageId' => 'random id',
+        'result' => 'foobar'
       }
     }
 

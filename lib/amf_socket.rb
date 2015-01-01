@@ -1,5 +1,4 @@
 require 'eventmachine'
-require 'rocketamf'
 require 'securerandom'
 require 'thread'
 

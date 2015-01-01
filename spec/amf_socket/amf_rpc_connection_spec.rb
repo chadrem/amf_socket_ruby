@@ -43,7 +43,7 @@ describe AmfSocket::AmfRpcConnection do
     before(:each) do
       @conn = AmfRpcConnTestable.new
       @command = 'hello'
-      @params = { :foo => 'bar' }
+      @params = { 'foo' => 'bar' }
       @request = AmfSocket::RpcRequest.new(@command, @params)
       @flag = false
       @block = proc do |request|
@@ -75,7 +75,7 @@ describe AmfSocket::AmfRpcConnection do
     before(:each) do
       @conn = AmfRpcConnTestable.new
       @command = 'hello'
-      @params = { :foo => 'bar' }
+      @params = { 'foo' => 'bar' }
       @message = AmfSocket::RpcMessage.new(@command, @params)
 
       AmfSocket::RpcMessage.should_receive(:new).with(@command, @params).and_return(@message)
@@ -95,12 +95,12 @@ describe AmfSocket::AmfRpcConnection do
 
     it 'should handle received requests' do
       object = {
-        :type => 'rpcRequest',
-        :request => {
-          :messageId => '123',
-          :command => 'hello',
-          :params => {
-            :foo => 'bar'
+        'type' => 'rpcRequest',
+        'request' => {
+          'messageId' => '123',
+          'command' => 'hello',
+          'params' => {
+            'foo' => 'bar'
           }
         }
       }
@@ -114,19 +114,19 @@ describe AmfSocket::AmfRpcConnection do
       request.class.should == AmfSocket::RpcReceivedRequest
       request.message_id.should == '123'
       request.command.should == 'hello'
-      request.params.should == { :foo => 'bar' }
+      request.params.should == { 'foo' => 'bar' }
       request.connection.should == @conn
     end
 
     it 'should handle received ping requests and reply' do
       object = {
-        :type => 'rpcRequest',
-        :request => {
-          :messageId => '123',
-          :command => 'amf_socket_ping',
-          :params => {
-            :time => Time.now,
-            :latency => 0.5
+        'type' => 'rpcRequest',
+        'request' => {
+          'messageId' => '123',
+          'command' => 'amf_socket_ping',
+          'params' => {
+            'time' => Time.now,
+            'latency' => 0.5
           }
         }
       }
@@ -142,12 +142,12 @@ describe AmfSocket::AmfRpcConnection do
 
     it 'should handle recevied messages' do
       object = {
-        :type => 'rpcMessage',
-        :message => {
-          :messageId => '123',
-          :command => 'hello',
-          :params => {
-            :foo => 'bar'
+        'type' => 'rpcMessage',
+        'message' => {
+          'messageId' => '123',
+          'command' => 'hello',
+          'params' => {
+            'foo' => 'bar'
           }
         }
       }
@@ -161,7 +161,7 @@ describe AmfSocket::AmfRpcConnection do
       message.class.should == AmfSocket::RpcReceivedMessage
       message.message_id.should == '123'
       message.command.should == 'hello'
-      message.params.should == { :foo => 'bar' }
+      message.params.should == { 'foo' => 'bar' }
       message.connection.should == @conn
     end
 
@@ -170,7 +170,7 @@ describe AmfSocket::AmfRpcConnection do
       req = nil
       res = nil
 
-      @conn.send_request('hello', :foo => 'bar') do |request|
+      @conn.send_request('hello', 'foo' => 'bar') do |request|
         req = request
 
         request.succeeded do |response|
@@ -180,10 +180,10 @@ describe AmfSocket::AmfRpcConnection do
       end
 
       object = {
-        :type => 'rpcResponse',
-        :response => {
-          :messageId => req.message_id,
-          :result => 'happy ending'
+        'type' => 'rpcResponse',
+        'response' => {
+          'messageId' => req.message_id,
+          'result' => 'happy ending'
         }
       }
 
@@ -204,7 +204,7 @@ describe AmfSocket::AmfRpcConnection do
       req = nil
       reas = nil
 
-      @conn.send_request('hello', :foo => 'bar') do |request|
+      @conn.send_request('hello', 'foo' => 'bar') do |request|
         req = request
 
         request.failed do |reason|

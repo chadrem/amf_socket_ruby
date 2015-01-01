@@ -3,12 +3,12 @@ require 'spec_helper'
 describe AmfSocket::RpcReceivedMessage do
   it 'should construct properly' do
     object = {
-      :type => 'rpcMessage',
-      :message => {
-        :messageId => 'random id',
-        :command => 'hello',
-        :params => {
-          :foo => 'bar'
+      'type' => 'rpcMessage',
+      'message' => {
+        'messageId' => 'random id',
+        'command' => 'hello',
+        'params' => {
+          'foo' => 'bar'
         }
       }
     }
@@ -20,6 +20,6 @@ describe AmfSocket::RpcReceivedMessage do
     message.connection.should == conn
     message.message_id.should == 'random id'
     message.command.should == 'hello'
-    message.params.should == { :foo => 'bar' }
+    message.params.should == { 'foo' => 'bar' }
   end
 end

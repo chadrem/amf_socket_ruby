@@ -4,6 +4,9 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'rubygems'
 require 'bundler'
 
+require 'byebug'
+require 'RocketAMF'
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e

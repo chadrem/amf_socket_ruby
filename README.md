@@ -4,9 +4,14 @@ This library is an implementation of [AMF Socket](https://github.com/chadrem/amf
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add these lines to your application's Gemfile:
 
+    gem 'RocketAMF', :git => 'https://github.com/rubyamf/rocketamf.git'
+    gem 'eventmachine'
     gem 'amf_socket'
+
+This gem requires the latest RocketAMF master code because it uses strings (instead of symbols) when encoding/decoding hashes.
+Failure to follow this requirement will result in exceptions.
 
 And then execute:
 
@@ -18,6 +23,8 @@ Or install it yourself as:
 
 ## Usage
 
+    require 'eventmachine'
+    require 'RocketAMF'
     require 'amf_socket'
 
     EM.run do
@@ -68,6 +75,8 @@ This gem includes a simple policy connection class for delivering this file.
 Note that you will need run the below code as root on Linux/UNIX since it uses a port number less 1024.
 It is recommended you run the policy server in a separate process from your application code in order to minimize security risks.  
 
+    require 'eventmachine'
+    require 'RocketAMF'
     require 'amf_socket'
 
     EM.run do

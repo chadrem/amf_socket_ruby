@@ -5,7 +5,7 @@ class AmfSocket::RpcResponse
   def initialize(request, response_object)
     raise AmfSocket::InvalidObject unless validate_object(response_object)
 
-    @result = response_object[:response][:result]
+    @result = response_object['response']['result']
     @request = request
   end
 
@@ -13,10 +13,10 @@ class AmfSocket::RpcResponse
 
   def validate_object(object)
     return false unless object.is_a?(Hash)
-    return false unless object[:type] == 'rpcResponse'
-    return false unless object[:response].is_a?(Hash)
-    return false unless object[:response][:messageId].is_a?(String)
-    return false unless object[:response].has_key?(:result)
+    return false unless object['type'] == 'rpcResponse'
+    return false unless object['response'].is_a?(Hash)
+    return false unless object['response']['messageId'].is_a?(String)
+    return false unless object['response'].has_key?('result')
 
     return true
   end

@@ -32,9 +32,9 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
 
   def receive_object(object)
     begin
-      raise AmfSocket::InvalidObject unless object.is_a?(Hash) && object[:type]
+      raise AmfSocket::InvalidObject unless object.is_a?(Hash) && object['type']
 
-      case object[:type]
+      case object['type']
       when 'rpcRequest'
         request = AmfSocket::RpcReceivedRequest.new(object, self)
         case request.command
@@ -87,7 +87,7 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
   end
 
   def receive_response(response_object)
-    raise AmfSocket::InvalidObject unless (message_id = response_object[:response][:messageId])
+    raise AmfSocket::InvalidObject unless (message_id = response_object['response']['messageId'])
 
     return unless (request = @sent_requests[message_id]) # Ignore timed out requests.
 

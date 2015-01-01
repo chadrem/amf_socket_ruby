@@ -14,13 +14,4 @@ Gem::Specification.new do |gem|
   gem.name          = "amf_socket"
   gem.require_paths = ["lib"]
   gem.version       = AmfSocket::VERSION
-
-  gem.add_dependency('eventmachine', ['~> 1.0.0'])
-  gem.add_dependency('RocketAMF', ['~> 0.2.1'])
-
-  gem.add_development_dependency('rake', ['= 0.9.2.2'])
-  gem.add_development_dependency('rspec', ['= 2.11.0'])
-  gem.add_development_dependency('guard', ['= 1.3.2'])
-  gem.add_development_dependency('guard-rspec', ['= 1.2.1'])
-  gem.add_development_dependency('growl', ['= 1.0.3'])
 end

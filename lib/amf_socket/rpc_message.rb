@@ -16,11 +16,11 @@ class AmfSocket::RpcMessage
   def to_hash
     object = {}
 
-    object[:type] = 'rpcMessage'
-    object[:message] = {}
-    object[:message][:messageId] = message_id
-    object[:message][:command] = command
-    object[:message][:params] = params
+    object['type'] = 'rpcMessage'
+    object['message'] = {}
+    object['message']['messageId'] = message_id
+    object['message']['command'] = command
+    object['message']['params'] = params
 
     return object
   end

@@ -3,12 +3,12 @@ require 'spec_helper'
 describe AmfSocket::RpcReceivedRequest do
   before(:each) do
     @object = {
-      :type => 'rpcRequest',
-      :request => {
-        :messageId => 'random id',
-        :command => 'hello',
-        :params => {
-          :foo => 'bar'
+      'type' => 'rpcRequest',
+      'request' => {
+        'messageId' => 'random id',
+        'command' => 'hello',
+        'params' => {
+          'foo' => 'bar'
         }
       }
     }
@@ -23,7 +23,7 @@ describe AmfSocket::RpcReceivedRequest do
     @request.connection.should == @conn
     @request.message_id.should == 'random id'
     @request.command.should == 'hello'
-    @request.params.should == { :foo => 'bar' }
+    @request.params.should == { 'foo' => 'bar' }
   end
 
   it 'should reply properly' do
