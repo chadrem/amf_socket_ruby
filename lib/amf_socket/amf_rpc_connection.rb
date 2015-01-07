@@ -129,7 +129,7 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
   def ping
     return if @next_ping > Time.now.utc
 
-    send_request('amf_socket_ping', :time => Time.now.utc, :latency => @latency.to_f) do |request|
+    send_request('amf_socket_ping', :time => Time.now.utc.to_i, :latency => @latency.to_f) do |request|
       @next_ping = Time.now.utc + PING_INTERVAL
 
       request.timeout = 10
