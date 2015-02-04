@@ -107,6 +107,12 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
     ping
   end
 
+  def ping_success
+  end
+
+  def ping_failure(reason)
+  end
+
   #
   # Private Methods.
   #
@@ -145,11 +151,5 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
         ping_failure(reason)
       end
     end
-  end
-
-  def ping_success
-  end
-
-  def ping_failure(reason)
   end
 end
