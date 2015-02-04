@@ -1,5 +1,6 @@
 class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
   PING_INTERVAL = 5 # Seconds.
+  PING_TIMEOUT  = 10 # Seconds.
 
   attr_reader :latency
 
@@ -132,15 +133,23 @@ class AmfSocket::AmfRpcConnection < AmfSocket::AmfConnection
     send_request('amf_socket_ping', :time => Time.now.utc.to_i, :latency => @latency.to_f) do |request|
       @next_ping = Time.now.utc + PING_INTERVAL
 
-      request.timeout = 10
+      request.timeout = PING_TIMEOUT
 
       request.succeeded do |response|
         @latency = Time.now.utc - request.sent_at
+        ping_success
       end
 
       request.failed do |reason|
         close_connection if reason == 'timed_out'
+        ping_failure(reason)
       end
     end
+  end
+
+  def ping_success
+  end
+
+  def ping_failure(reason)
   end
 end
